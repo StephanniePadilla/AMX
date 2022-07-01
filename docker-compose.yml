@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  amxextension_dev:
+    container_name: amxextension_dev
+    image: cloudblueconnect/connect-extension-runner:25.0
+    command: cextrun -d
+    volumes: 
+      - .:/extension
+    env_file:
+      - .amxextension_dev.env
+
+  amxextension_bash:
+    container_name: amxextension_bash
+    image: cloudblueconnect/connect-extension-runner:25.0
+    working_dir: /extension
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/extension
+    env_file:
+      - .amxextension_dev.env
+
+  amxextension_test:
+    container_name: amxextension_test
+    image: cloudblueconnect/connect-extension-runner:25.0
+    working_dir: /extension
+    command: /bin/bash -c "poetry install && poetry run pytest"
+    volumes:
+      - .:/extension
+    env_file:
+      - .amxextension_dev.env
